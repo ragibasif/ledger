@@ -1,6 +1,6 @@
 # ledger
 
-Ledger is a logging library implemented in C.
+Ledger is a logging library implemented in C. It was built in the [dragon](https://github.com/ragibasif/dragon) lab.
 
 Disclaimer: **For educational and recreational purposes only.**
 
