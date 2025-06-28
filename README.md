@@ -4,8 +4,6 @@ Ledger is a logging library implemented in C. It was built in the [dragon](https
 
 Disclaimer: **For educational and recreational purposes only.**
 
-## ledger.c/ledger.h
-
 ![ledger demo code](./docs/svgs/ledger_demo.svg)
 
 ![ledger demo gif](./docs/gifs/ledger_demo.gif)
