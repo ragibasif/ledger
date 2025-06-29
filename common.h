@@ -1,5 +1,5 @@
 /*
- * File: shared.h
+ * File: common.h
  * Author: Ragib Asif
  * Email: ragib.asif30@myhunter.cuny.edu
  * GitHub: https://github.com/ragibasif
@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef SHARED_H_
-#define SHARED_H_
+#ifndef COMMON_H_
+#define COMMON_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,18 +21,43 @@ extern "C" {
 // Includes
 //------------------------------------------------------------------------------
 
-#include <assert.h> // assert
-#include <ctype.h>
-#include <limits.h>  // INT_MAX, INT_MIN
-#include <pthread.h> // pthread
-#include <stdarg.h>  // va_args, va_end, va_start, va_list
-#include <stdbool.h> // bool, true, false
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>  // printf, puts
-#include <stdlib.h> // malloc, realloc, calloc, free
-#include <string.h> // strlen, memcpy, strcpy
-#include <time.h>   // time
+#include <assert.h>  // assert() - program diagnostics
+#include <ctype.h>   // Character handling:
+                     // isalpha(), isdigit(), toupper(), tolower()
+#include <errno.h>   // Error numbers (errno)
+#include <float.h>   // Floating-point limits (FLT_MAX, DBL_EPSILON, etc.)
+#include <limits.h>  // Integer limits (INT_MAX, INT_MIN, etc.)
+#include <locale.h>  // setlocale() - localization functions
+#include <math.h>    // Math functions:
+                     // sqrt(), sin(), cos(), pow(), ceil(), floor()
+#include <setjmp.h>  // setjmp(), longjmp() - non-local jumps
+#include <signal.h>  // signal(), raise() - signal handling
+#include <stdarg.h>  // Variable arguments:
+                     // va_start(), va_arg(), va_end(), va_list
+#include <stdbool.h> // Boolean type (bool, true, false)
+#include <stddef.h>  // NULL, offsetof(), size_t, ptrdiff_t
+#include <stdint.h>  // Fixed-width integers (int32_t, uint64_t, etc.)
+#include <stdio.h>   // Input/output:
+                     // printf(), scanf(), fopen(), fclose(), fgets()
+#include <stdlib.h>  // General utilities:
+                     // malloc(), free(), exit(), atoi(), rand()
+#include <string.h>  // String manipulation:
+                     // strlen(), strcpy(), strcmp(), memset(), memmove()
+#include <time.h>    // Time functions:
+                     // time(), clock(), difftime(), strftime()
+
+// POSIX/Unix extensions (may not be available on all systems)
+#include <dirent.h>     // Directory operations (opendir(), readdir())
+#include <fcntl.h>      // File control (open(), fcntl())
+#include <pthread.h>    // Threads:
+                        // pthread_create(), pthread_join(), mutex functions
+#include <sys/stat.h>   // File status (stat(), fstat())
+#include <unistd.h>     // POSIX API:
+                        // read(), write(), close(), fork(), getpid()
+#include <netdb.h>      // Network operations (gethostbyname(), getaddrinfo())
+#include <sys/socket.h> // Socket programming (socket(), bind(), listen())
+
+#include "third_party_c/internal_debug.h" // internal mem debug and print debug
 
 //------------------------------------------------------------------------------
 // Utility Macros
@@ -253,4 +278,4 @@ typedef unsigned char BYTE; // name BYTE for one-byte numbers
 }
 #endif // __cplusplus
 
-#endif // SHARED_H_
+#endif // COMMON_H_

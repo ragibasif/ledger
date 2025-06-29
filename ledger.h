@@ -19,7 +19,7 @@
 extern "C" {
 #endif // __cplusplus
 
-#include "shared.h"
+#include "common.h"
 
 enum log_type {
     LT_INFO = 0,
