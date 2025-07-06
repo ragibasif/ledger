@@ -1,8 +1,8 @@
 # ledger
 
-![c-cpp.yml](https://github.com/ragibasif/ledger/actions/workflows/c-cpp.yml/badge.svg)
+![build.yml](https://github.com/ragibasif/ledger/actions/workflows/build.yml/badge.svg)
 
-Ledger is a logging library implemented in C.
+Ledger is a logging library implemented in C. Inspired by [log4j](https://github.com/apache/logging-log4j2).
 
 Disclaimer: **For educational and recreational purposes only.**
 
