@@ -15,21 +15,13 @@
 static pthread_mutex_t log_mutex = PTHREAD_MUTEX_INITIALIZER;
 static FILE *log_file = NULL;
 
-static const char *level_strings[] = {
-    [LT_INFO] = "[INFO]",
-    [LT_DEBUG] = "[DEBUG]",
-    [LT_WARN] = "[WARN]",
-    [LT_ERROR] = "[ERROR]",
+static const char *level_literal[] = {
+    [LL_OFF] = "OFF",     [LL_FATAL] = "FATAL", [LL_ERROR] = "ERROR",
+    [LL_WARN] = "WARN",   [LL_INFO] = "INFO",   [LL_DEBUG] = "DEBUG",
+    [LL_TRACE] = "TRACE", [LL_ALL] = "ALL",
 };
 
-#ifdef L_COLOR
-static const char *level_colors[] = {[LT_INFO] = AEC_GREEN,
-                                     [LT_DEBUG] = AEC_CYAN,
-                                     [LT_WARN] = AEC_YELLOW,
-                                     [LT_ERROR] = AEC_RED};
-#endif // L_COLOR
-
-void l_init(const char *file) {
+void l_create(const char *file) {
     pthread_mutex_lock(&log_mutex);
     if (file) {
         log_file = fopen(file, "a");
@@ -44,7 +36,7 @@ void l_init(const char *file) {
     pthread_mutex_unlock(&log_mutex);
 }
 
-void l_fin(void) {
+void l_destroy(void) {
     pthread_mutex_lock(&log_mutex);
     if (log_file && log_file != stdout) {
         fclose(log_file);
@@ -53,8 +45,8 @@ void l_fin(void) {
     pthread_mutex_unlock(&log_mutex);
 }
 
-void l_out(enum log_type level, const char *file, unsigned int line,
-           const char *function, const char *format, ...) {
+void l_log(const enum log_level level, const char *file,
+           const unsigned int line, const char *func, const char *fmt, ...) {
 
     if (!log_file) {
         fprintf(stderr, "Logging not initialized.\n");
@@ -63,30 +55,19 @@ void l_out(enum log_type level, const char *file, unsigned int line,
     }
 
     pthread_mutex_lock(&log_mutex);
+
     time_t now;
     char *time_str;
     now = time(NULL);
     time_str = ctime(&now);
     time_str[strlen(time_str) - 1] = '\0';
 
-#ifdef L_COLOR
-    if (log_file != stdout) {
-        // do not output colors if logging to file
-        fprintf(log_file, "%s [%s:%u (%s)] %s ", time_str, file, line, function,
-                level_strings[level]);
-    } else {
-        fprintf(log_file, "%s%s [%s:%u (%s)]%s %s%s%s%s ", AEC_DIM, time_str,
-                file, line, function, AEC_RESET, AEC_BOLD, level_colors[level],
-                level_strings[level], AEC_RESET);
-    }
-#else
-    fprintf(log_file, "%s [%s:%u (%s)] %s ", time_str, file, line, function,
-            level_strings[level]);
-#endif // L_COLOR
+    fprintf(log_file, "%s [%s:%u (%s)] %s ", time_str, file, line, func,
+            level_literal[level]);
 
     va_list args;
-    va_start(args, format);
-    vfprintf(log_file, format, args);
+    va_start(args, fmt);
+    vfprintf(log_file, fmt, args);
     va_end(args);
 
     fprintf(log_file, "\n");

@@ -29,36 +29,37 @@ enum log_level {
     LL_INFO = 4,  // informational log event
     LL_DEBUG = 5, // debugging log
     LL_TRACE = 6, // for very fine grained tracing
-    LL_ALL = 7,   // log all events
-    LL_COUNT = 8  // count of log levels
+    LL_ALL = 7,   // log all events, default
 };
 
 struct log_event {
-    enum log_level level;
     char *file;
     unsigned int line;
     char *func;
+    struct tm *time;
     char *fmt;
+    va_list args;
+    int level;
 };
 
-extern void l_create(const char *file);
+extern void l_create(const char *log_file);
 extern void l_destroy(void);
-extern void l_print(const enum log_level level, const char *file,
-                    const unsigned int line, const char *func, const char *fmt,
-                    ...);
+extern void l_log(const enum log_level level, const char *file,
+                  const unsigned int line, const char *func, const char *fmt,
+                  ...);
 
 #define FATAL(fmt, ...)                                                        \
-    l_print(LL_FATAL, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+    l_log(LL_FATAL, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
 #define ERROR(fmt, ...)                                                        \
-    l_print(LL_ERROR, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+    l_log(LL_ERROR, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
 #define WARN(fmt, ...)                                                         \
-    l_print(LL_WARN, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+    l_log(LL_WARN, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
 #define INFO(fmt, ...)                                                         \
-    l_print(LL_INFO, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+    l_log(LL_INFO, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
 #define DEBUG(fmt, ...)                                                        \
-    l_print(LL_DEBUG, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+    l_log(LL_DEBUG, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
 #define TRACE(fmt, ...)                                                        \
-    l_print(LL_TRACE, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+    l_log(LL_TRACE, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
 
 #ifdef __cplusplus
 }

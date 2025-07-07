@@ -16,12 +16,12 @@ void ledger_demo(void) {
     int port = 8080;
     size_t i = 32;
     char *filename = "output.txt";
-    l_init(NULL);
+    l_create(NULL);
     INFO("Server running on port %d.", port);
     WARN("Low memory detected.");
     DEBUG("Loop iteration: %u", i);
     ERROR("File not found - %s.", filename);
-    l_fin();
+    l_destroy();
 }
 
 int main(int argc, char **argv) {
